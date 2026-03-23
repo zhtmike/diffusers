@@ -242,7 +242,7 @@ class TestQwenImageTransformer(QwenImageTransformerTesterConfig, ModelTesterMixi
                 (1, img_h, img_w),
                 (1, img_h, img_w),
             ]
-        ]
+        ] * batch_size
 
         with torch.no_grad():
             output = model(
@@ -277,7 +277,7 @@ class TestQwenImageTransformerContextParallel(QwenImageTransformerTesterConfig, 
     """Context Parallel inference tests for QwenImage Transformer."""
 
     def get_dummy_inputs(self) -> dict[str, torch.Tensor]:
-        batch_size = 1  # TODO: context parallel faild with batch size > 1, need fix
+        batch_size = 1  # TODO: context parallel failed with batch size > 1, need fix
         num_latent_channels = embedding_dim = 16
         height = width = 4
         sequence_length = 8

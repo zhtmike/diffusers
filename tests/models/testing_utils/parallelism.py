@@ -22,7 +22,7 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 
 from diffusers.models._modeling_parallel import ContextParallelConfig
-from diffusers.models.attention_dispatch import _AttentionBackendRegistry
+from diffusers.models.attention_dispatch import _AttentionBackendRegistry, AttentionBackendName
 
 from ...testing_utils import (
     is_context_parallel,
@@ -170,7 +170,7 @@ class ContextParallelTesterMixin:
 
         if cp_type == "ring_degree":
             active_backend, _ = _AttentionBackendRegistry.get_active_backend()
-            if active_backend.value == "native":
+            if active_backend == AttentionBackendName.NATIVE:
                 pytest.skip("Ring attention is not supported with the native attention backend.")
 
         world_size = 2
@@ -217,7 +217,7 @@ class ContextParallelTesterMixin:
 
         if cp_type == "ring_degree":
             active_backend, _ = _AttentionBackendRegistry.get_active_backend()
-            if active_backend.value == "native":
+            if active_backend == AttentionBackendName.NATIVE:
                 pytest.skip("Ring attention is not supported with the native attention backend.")
 
         world_size = 2
